@@ -1,29 +1,29 @@
+# Импорт встроенной библиотеки для работы веб-сервера
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
-
 
 # Для начала определим настройки запуска
 hostName = "localhost" # Адрес для доступа по сети
 serverPort = 8080 # Порт для доступа по сети
+
 class MyServer(BaseHTTPRequestHandler):
     """
         Специальный класс, который отвечает за
         обработку входящих запросов от клиентов
     """
-    def do_get(self):
+    def do_GET(self):
         """ Метод для обработки входящих GET-запросов """
         self.send_response(200) # Отправка кода ответа
-        self.send_header("Content-type", "text/html") # Отправка типа данных, который будет передаваться
+        self.send_header("Content-type", "application/json") # Отправка типа данных, который будет передаваться
         self.end_headers() # Завершение формирования заголовков ответа
+        self.wfile.write(bytes("{'message': 'OK'}", "utf-8")) # Тело ответа
 
-        with open('main-3.html', 'r', encoding='utf-8') as file:
-            self.wfile.write(file.read().encode('utf-8'))
-            # self.wfile.write(file.read().encode())
 if __name__ == "__main__":
     # Инициализация веб-сервера, который будет по заданным параметрах в сети
     # принимать запросы и отправлять их на обработку специальному классу, который был описан выше
     webServer = HTTPServer((hostName, serverPort), MyServer)
     print("Server started http://%s:%s" % (hostName, serverPort))
+
     try:
         # Cтарт веб-сервера в бесконечном цикле прослушивания входящих запросов
         webServer.serve_forever()
