@@ -1,36 +1,62 @@
-# Импорт встроенной библиотеки для работы веб-сервера
+import os.path
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import time
+
 
 # Для начала определим настройки запуска
-hostName = "localhost" # Адрес для доступа по сети
-serverPort = 8080 # Порт для доступа по сети
+hostName = "localhost"  # Адрес для доступа по сети
+serverPort = 8080  # Порт для доступа по сети
+
+#http://localhost:63342/pythonProject/main.html
 
 class MyServer(BaseHTTPRequestHandler):
     """
         Специальный класс, который отвечает за
         обработку входящих запросов от клиентов
     """
+    base_dir = os.path.dirname(__file__)
+    path_to_file = {
+        "GET":
+            {
+                "/contact": "contact.html",
+                "/category": "category.html",
+                "/catalog": "catalog.html",
+                "/main": "main.html",
+                "/default": "contact.html"
+            }
+    }
+
+    def do_POST(self):
+        """Метод для обработки входящих POST-запросов"""
+        content_length = int(self.headers['Content-Length'])
+        body = self.rfile.read(content_length).decode('utf-8')
+        print(body)
+        self.send_response(200)
+        self.end_headers()
+
+
     def do_GET(self):
         """ Метод для обработки входящих GET-запросов """
-        self.send_response(200) # Отправка кода ответа
-        self.send_header("Content-type", "application/json") # Отправка типа данных, который будет передаваться
-        self.end_headers() # Завершение формирования заголовков ответа
-        self.wfile.write(bytes("{'message': 'OK'}", "utf-8")) # Тело ответа
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        path_to_file = self.path_to_file["GET"]
+        if self.path in path_to_file:
+            template = path_to_file[self.path]
+        else:
+            template = path_to_file["/default"]
+
+        with open(template, encoding="utf-8", mode="r") as f:
+            self.wfile.write(bytes(f.read(), "utf-8"))
+
 
 if __name__ == "__main__":
-    # Инициализация веб-сервера, который будет по заданным параметрах в сети
-    # принимать запросы и отправлять их на обработку специальному классу, который был описан выше
     webServer = HTTPServer((hostName, serverPort), MyServer)
     print("Server started http://%s:%s" % (hostName, serverPort))
 
     try:
-        # Cтарт веб-сервера в бесконечном цикле прослушивания входящих запросов
         webServer.serve_forever()
     except KeyboardInterrupt:
-        # Корректный способ остановить сервер в консоли через сочетание клавиш Ctrl + C
         pass
 
-    # Корректная остановка веб-сервера, чтобы он освободил адрес и порт в сети, которые занимал
     webServer.server_close()
     print("Server stopped.")
