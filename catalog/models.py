@@ -17,7 +17,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name='Наименование')
     description = models.TextField(blank=True, verbose_name='Описание')
-    picture = models.ImageField(upload_to='photos/', verbose_name='Изображение')
+    picture = models.ImageField(upload_to='photos/', blank=True, null=True, verbose_name='Изображение')
     price = models.PositiveIntegerField()
     created_at = models.DateField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateField(auto_now=True, verbose_name='Дата последнего изменения')
