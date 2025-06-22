@@ -11,6 +11,7 @@
                   <img src="{{ product.picture | media_filter }}" class="img-thumbnail" alt="{{ product.name }}">
                   <div class="card-body">
                     <p class="card-text">{{ product.name }}</p>
+                    <p class="card-text">Описание: {{product.description | truncatechars:100}}</p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
                           <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}" role="button">Подробности</a>
