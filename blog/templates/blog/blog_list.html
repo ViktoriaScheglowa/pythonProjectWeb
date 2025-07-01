@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 {% load my_tags %}
-{% block title %}Список продуктов{% endblock %}
+{% block title %}Список статей{% endblock %}
 {% block content %}
-    <h2>Список продуктов</h2>
+    <h2>Список статей</h2>
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {% for product in products %}
+            {% for blog in blogs %}
             <div class="col">
                 <div class="card shadow-sm">
-                  <img src="{{ product.picture | media_filter }}" class="img-thumbnail" alt="{{ product.name }}">
+                  <img src="{{ blog.preview | media_filter }}" class="img-thumbnail" alt="{{ blog.title }}">
                   <div class="card-body">
-                    <p class="card-text">{{ product.name }}</p>
-                    <p class="card-text">Описание: {{product.description | truncatechars:100}}</p>
+                    <p class="card-text">{{ blog.title }}</p>
+                    <p class="card-text">Содержимое: {{blog.content | truncatechars:100}}</p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
-                          <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}" role="button">Подробности</a>
+                          <a class="btn btn-primary" href="{% url 'blog:blog_detail' blog.pk %}" role="button">Подробности</a>
                       </div>
                       </div>
                   </div>
