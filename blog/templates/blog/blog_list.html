@@ -21,8 +21,16 @@
                   </div>
                 </div>
               </div>
-            {% endfor %}
+              {% empty %}
+            <!-- Если нет блогов, отображаем сообщение -->
+                <div class="col-12 text-center">
+                    <p>Нет опубликованных статей.</p>
+                </div>
+              {% endfor %}
           </div>
         </div>
       </div>
+    <div class="fixed-bottom d-flex justify-content-center mb-3">
+        <a class="btn btn-primary btn-lg shadow" href="{% url 'blog:blog_create' %}" role="button">Создать пост</a>
+    </div>
 {% endblock %}
