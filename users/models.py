@@ -3,9 +3,9 @@ from django.db import models
 
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    email = models.EmailField(unique=True, verbose_name='Email')
+    phone_number = models.CharField(max_length=15, blank=True, null=True, verbose_name='Phone')
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name='Avatar')
     country = models.CharField(max_length=35, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
