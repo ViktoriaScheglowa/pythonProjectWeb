@@ -1,32 +1,19 @@
 import secrets
 
-from django.contrib.auth import logout
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
-from django.views import View
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView
 
-from catalog.form import ProductForm
-from catalog.models import Product
 from config.settings import EMAIL_HOST_USER
 from users.forms import UserRegisterForm
 from users.models import User
 
 
-class CustomLogoutView(View):
-    def get(self, request):
-        logout(request)
-        return HttpResponseRedirect(reverse('users:logout'))
-
-
-class UserCreateView(LoginRequiredMixin, CreateView):
-    model = User
-    template_name = 'users:login'
+class UserCreateView(CreateView):
+    template_name = 'register.html'
     form_class = UserRegisterForm
-    success_url = reverse_lazy('users/user_form.html')
+    success_url = reverse_lazy('catalog/product_list.html')
 
     def form_valid(self, form):
         user = form.save()
@@ -52,25 +39,3 @@ def email_verification(request, token):
     user.is_active = True
     user.save()
     return redirect(reverse("catalog:product_list"))
-
-
-class ProductCreateView(LoginRequiredMixin, CreateView):
-    model = Product
-    form_class = ProductForm
-    template_name = 'product_form.html'
-    success_url = reverse_lazy('product_list')
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
-    model = Product
-    form_class = ProductForm
-    template_name = 'product_form.html'
-    success_url = reverse_lazy('product_list')
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)

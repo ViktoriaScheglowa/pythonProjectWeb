@@ -4,9 +4,9 @@ from django.db import models
 
 class User(AbstractUser):
     """Класс создания модели пользователя"""
-    username = models.CharField(max_length=10, blank=True, null=True)
+    username = None
     email = models.EmailField(unique=True, verbose_name='Email')
-    phone_number = models.CharField(max_length=15, blank=True, null=True, verbose_name='Phone')
+    phone_number = models.CharField(max_length=15, blank=True, null=True, verbose_name='Phone', help_text="Введите номер телефона")
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name='Avatar')
     country = models.CharField(max_length=35, blank=True, null=True)
     token = models.CharField(max_length=100, blank=True, null=True, verbose_name="Token")

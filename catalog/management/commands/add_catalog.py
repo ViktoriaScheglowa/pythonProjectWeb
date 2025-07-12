@@ -9,9 +9,9 @@ class Command(BaseCommand):
         category, _ = Category.objects.get_or_create(title='Выпечка', description='Мучные кондитерские изделия')
 
         product = [
-            {'name': 'Печенье', 'description': 'Овсяное с шоколадом', 'price': '250', 'created_at': '2025-01-01', 'updated_at': '2025-11-01', 'category': 'category'},
+            {'name': 'Печенье', 'description': 'Овсяное с шоколадом', 'price': '250', 'created_at': '2025-01-01', 'updated_at': '2025-11-01', 'category': category.pk},
             {'name': 'Пряники', 'description': 'Ванильные с джемом', 'price': '300', 'created_at': '2025-01-01',
-             'updated_at': '2025-11-01', 'category': 'category'},
+             'updated_at': '2025-11-01', 'category': category.pk},
         ]
 
         for product_data in product:
