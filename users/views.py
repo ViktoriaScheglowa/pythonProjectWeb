@@ -11,9 +11,9 @@ from users.models import User
 
 
 class UserCreateView(CreateView):
-    template_name = 'register.html'
+    template_name = 'users/register.html'
     form_class = UserRegisterForm
-    success_url = reverse_lazy('catalog/product_list.html')
+    success_url = reverse_lazy('catalog:product_list')
 
     def form_valid(self, form):
         user = form.save()
