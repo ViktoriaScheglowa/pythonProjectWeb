@@ -21,13 +21,6 @@ class ProductDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
     context_object_name = 'product'
     permission_required = 'catalog.view_product'
 
-    def get_object(self, queryset=None):
-        self.object = super().get_object(queryset)
-        if self.request.user == self.object.owner:
-            self.object.save()
-            return self.object
-        raise PermissionDenied
-
 
 class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
@@ -65,6 +58,10 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('catalog:product_list')
     permission_required = 'catalog.delete_product'
+
+    def has_permission(self):  # этот метод вызывается для проверки доступа в View
+        user = self.request.user
+        return user.has_perm('catalog.can_delete_product') or user == self.object.owner
 
 
 class ContactView(TemplateView):
