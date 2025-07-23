@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 {% load my_tags %}
-{% block title %}Продукт{% endblock %}
+{% block title %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h3>Список товаров в группе {category.title}</h3>
+</div>
+{% endblock %}
 {% block content %}
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <div class="col">
+            {% for product in categories %}
+              <div class="col">
                 <div class="card shadow-sm">
                   <img src="{{ product.picture | media_filter }}" class="img-thumbnail" alt="{{ product.name }}">
                   <div class="card-body">
                     <p class="card-text">Продукт: {{product.name}}</p>
                     <p class="card-text">Описание: {{product.description}}</p>
-                    <p class="card-text">Цена: {{product.price}}</p>
-                    <p class="card-text">Категория: {{product.category}}</p>
-                    <p class="card-text">Дата создания: {{product.created_at}}</p>
-                    <p class="card-text">Дата изменения: {{product.updated_at}}</p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
                           {% if perms.catalog.can_delete_product or user == product.owner %}
@@ -27,6 +28,7 @@
                   </div>
                 </div>
               </div>
+             {% endfor %}
           </div>
         </div>
       </div>
